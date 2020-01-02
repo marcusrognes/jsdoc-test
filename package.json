@@ -1,0 +1,21 @@
+{
+  "name": "jsdoc-test",
+  "version": "0.0.1",
+  "description": "Add runnable @test tag to jsdoc",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js -f **/*.js"
+  },
+  "keywords": [
+    "test",
+    "jsdoc",
+    "doc"
+  ],
+  "author": "Marcus Rognes",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^4.0.1",
+    "glob": "^7.1.6",
+    "jsdoc-api": "^5.0.4"
+  }
+}
