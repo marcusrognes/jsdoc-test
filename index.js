@@ -19,6 +19,7 @@ if (!program.files) {
 
 function customPrintTest(test) {
 	test.split(/\r\n|\r|\n/g).forEach(line => console.log('    ' + chalk.green(line.trim())));
+	console.log('');
 }
 
 glob(program.files, { ignore: '**/node_modules/**/*' }, async (error, files) => {
@@ -39,12 +40,15 @@ glob(program.files, { ignore: '**/node_modules/**/*' }, async (error, files) => 
 
 	fileData.forEach(file => {
 		file.jsdoc.forEach(comment => {
+			console.log(require('util').inspect(comment, { colors: true, depth: null }));
 			comment.tags &&
 				comment.tags.forEach(tag => {
 					if (tag.title != 'test') {
 						return;
 					}
 					tests.push({
+						name: comment.name,
+						type: comment.kind,
 						file: file.file,
 						testCode: tag.value,
 						fileData: file.fileData
@@ -56,8 +60,15 @@ glob(program.files, { ignore: '**/node_modules/**/*' }, async (error, files) => 
 	console.log(`Found ${tests.length} tests`);
 	let success = 0;
 	let failed = 0;
+	let printedHeaders = [];
 	await Promise.all(
 		tests.map(async test => {
+			const header = `${test.type}: ${test.name} in ${test.file}`;
+			if (printedHeaders.indexOf(header) === -1) {
+				console.log(chalk.green(header));
+				printedHeaders.push(header);
+			}
+
 			console.log('Running:');
 			customPrintTest(`${test.testCode}`);
 
