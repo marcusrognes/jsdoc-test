@@ -27,6 +27,7 @@ glob(program.files, { ignore: '**/node_modules/**/*' }, async (error, files) => 
 		throw error;
 	}
 
+	// Get the file data and documentation data from the matched files.
 	const fileData = files.map(filePath => {
 		const fileData = fs.readFileSync(filePath).toString();
 		return {
@@ -38,6 +39,7 @@ glob(program.files, { ignore: '**/node_modules/**/*' }, async (error, files) => 
 
 	const tests = [];
 
+	// Get all tests within the documentation
 	fileData.forEach(file => {
 		file.jsdoc.forEach(comment => {
 			console.log(require('util').inspect(comment, { colors: true, depth: null }));
@@ -61,6 +63,8 @@ glob(program.files, { ignore: '**/node_modules/**/*' }, async (error, files) => 
 	let success = 0;
 	let failed = 0;
 	let printedHeaders = [];
+
+	// Run all tests and wait for results
 	await Promise.all(
 		tests.map(async test => {
 			const header = `${test.type}: ${test.name} in ${test.file}`;
@@ -113,5 +117,6 @@ ${test.testCode}
 
 	if (success) console.log(chalk.green(`Tests finished successfully: ${success}`));
 	if (failed) console.log(chalk.red(`Tests failed: ${failed}`));
+
 	process.exit();
 });
