@@ -1,3 +1,5 @@
+const babel = require('@babel/core');
+const chalk = require('chalk');
 const jsdoc = require('jsdoc-api');
 const fs = require('fs');
 const glob = require('glob');
@@ -15,7 +17,11 @@ if (!program.files) {
 	throw new Error('Files missing');
 }
 
-glob(program.files, { ignore: '**/node_modules/**/*' }, (error, files) => {
+function customPrintTest(test) {
+	test.split(/\r\n|\r|\n/g).forEach(line => console.log('    ' + chalk.green(line.trim())));
+}
+
+glob(program.files, { ignore: '**/node_modules/**/*' }, async (error, files) => {
 	if (error) {
 		throw error;
 	}
@@ -38,7 +44,6 @@ glob(program.files, { ignore: '**/node_modules/**/*' }, (error, files) => {
 					if (tag.title != 'test') {
 						return;
 					}
-
 					tests.push({
 						file: file.file,
 						testCode: tag.value,
@@ -49,21 +54,53 @@ glob(program.files, { ignore: '**/node_modules/**/*' }, (error, files) => {
 	});
 
 	console.log(`Found ${tests.length} tests`);
+	let success = 0;
+	let failed = 0;
+	await Promise.all(
+		tests.map(async test => {
+			console.log('Running:');
+			customPrintTest(`${test.testCode}`);
 
-	tests.forEach(test => {
-		try {
-			eval(`
-            ${testRunnerCode}
-            ${test.fileData}
+			try {
+				let code = `${testRunnerCode}
+${test.fileData}
 
-            ${test.testCode}
-        `);
-		} catch (error) {
-			console.log(error);
-		}
+${test.testCode}
+`;
+				let transpiledCode = '';
 
-		console.log(`Test finished: ${test.file}`);
-	});
+				try {
+					transpiledCode = await new Promise((resolve, reject) => {
+						babel.transform(
+							code,
+							{
+								babelrc: true,
+								filename: '.babelrc'
+							},
+							(error, result) => {
+								if (error) {
+									return reject(error);
+								}
 
+								return resolve(result.code);
+							}
+						);
+					});
+				} catch (error) {
+					throw new Error(`Failed to run test code: ${error.message}`);
+				}
+
+				eval(transpiledCode);
+
+				success++;
+			} catch (error) {
+				failed++;
+				console.log(chalk.red(require('util').inspect(error, { colors: true, depth: null })));
+			}
+		})
+	);
+
+	if (success) console.log(chalk.green(`Tests finished successfully: ${success}`));
+	if (failed) console.log(chalk.red(`Tests failed: ${failed}`));
 	process.exit();
 });
