@@ -1,27 +1,42 @@
 {
-  "name": "jsdoc-test",
-  "version": "0.0.1",
-  "description": "Add runnable @test tag to jsdoc",
-  "main": "index.js",
-  "scripts": {
-    "test": "node index.js -f **/*.js"
-  },
-  "keywords": [
-    "test",
-    "jsdoc",
-    "doc"
-  ],
-  "author": "Marcus Rognes",
-  "license": "ISC",
-  "dependencies": {
-    "@babel/core": "^7.7.7",
-    "@babel/plugin-transform-runtime": "^7.7.6",
-    "@babel/preset-env": "^7.7.7",
-    "@babel/runtime": "^7.7.7",
-    "chalk": "^3.0.0",
-    "commander": "^4.0.1",
-    "glob": "^7.1.6",
-    "jsdoc-api": "^5.0.4",
-    "moment": "^2.24.0"
-  }
+	"name": "jsdoc-test",
+	"version": "0.0.1",
+	"description": "Add runnable @test tag to jsdoc",
+	"main": "index.js",
+	"scripts": {
+		"test": "node index.js -f **/*.js",
+		"lint": "prettier --write \"**/*.{js,json,css,md}\""
+	},
+	"keywords": [
+		"test",
+		"jsdoc",
+		"doc"
+	],
+	"author": "Marcus Rognes",
+	"license": "ISC",
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"{src,tests,scripts}/*.{js,json,css,md}": [
+			"prettier --write",
+			"git add"
+		]
+	},
+	"dependencies": {
+		"@babel/core": "^7.7.7",
+		"@babel/plugin-transform-runtime": "^7.7.6",
+		"@babel/preset-env": "^7.7.7",
+		"@babel/runtime": "^7.7.7",
+		"chalk": "^3.0.0",
+		"commander": "^4.0.1",
+		"glob": "^7.1.6",
+		"jsdoc-api": "^5.0.4",
+		"moment": "^2.24.0"
+	},
+	"devDependencies": {
+		"prettier": "^1.19.1"
+	}
 }

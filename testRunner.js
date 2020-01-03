@@ -5,7 +5,9 @@ class Assertion {
 
 	toBe(value) {
 		if (this.toAssert !== value) {
-			throw new Error(`Assertion failed: ${this.toAssert} was not ${value}`);
+			throw new Error(
+				`Assertion failed: ${this.toAssert} was not ${value}`,
+			);
 		}
 	}
 }
