@@ -8,7 +8,7 @@
 		"lint": "prettier --write \"**/*.{js,json,css,md}\""
 	},
 	"bin": {
-		"jsdoc-test": "index.js"
+		"jsdoc-test": "./index.js"
 	},
 	"keywords": [
 		"test",

@@ -1,4 +1,4 @@
-#!/usr/local/bin/node
+#!/usr/bin/env node
 
 const babel = require('@babel/core');
 const chalk = require('chalk');
