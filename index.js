@@ -1,11 +1,15 @@
+#!/usr/local/bin/node
+
 const babel = require('@babel/core');
 const chalk = require('chalk');
 const jsdoc = require('jsdoc-api');
 const fs = require('fs');
 const glob = require('glob');
-const testRunnerCode = fs.readFileSync('./testRunner.js').toString();
+const testRunnerCode = fs.readFileSync('./lib/testRunner.js').toString();
 
 const program = require('commander');
+
+console.log(require('./lib/babelConfigFinder')());
 
 program.version('0.0.1');
 
