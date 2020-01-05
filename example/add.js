@@ -8,7 +8,7 @@
  * // Testing newline and comments!
  * assert(add(2, 3)).toBe(5);
  * @test
- * assert(add(1, 2)).toBe(5);
+ * assert(add(1, 2)).toBe(5); // Throws error
  */
 function add(a, b) {
 	return a + b;

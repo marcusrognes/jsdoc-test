@@ -2,6 +2,8 @@
 
 Run test suites within jsdoc
 
+Inspired by elixir doctests
+
 ## Example run
 
 ```
@@ -22,3 +24,8 @@ function hello(thing) {
 	return `Hello, ${thing}!`;
 }
 ```
+
+## TODO
+
+[ ] Add support for test descriptions
+[ ] Add support for jest
