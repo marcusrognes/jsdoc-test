@@ -7,8 +7,3 @@ Run test suites within jsdoc
 ```
 node index.js -f example/**/*.js
 ```
-
-
-## TODO
-
-[] Babel support. ()
