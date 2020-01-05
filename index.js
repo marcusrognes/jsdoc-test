@@ -1,16 +1,23 @@
 #!/usr/bin/env node
 
+const path = require('path');
+
+/**
+ * This is so that the test lib can load ndoe_modules from the local project.
+ * TODO: Make so that it searches for node_modules folder if running within project folder structure. like `babelConfigFinder.js`
+ */
+require.main.paths.push(process.cwd() + path.sep + 'node_modules');
 const babel = require('@babel/core');
 const chalk = require('chalk');
 const jsdoc = require('jsdoc-api');
 const fs = require('fs');
 const glob = require('glob');
-const testRunnerCode = fs.readFileSync('./lib/testRunner.js').toString();
-
+const testRunnerCode = fs
+	.readFileSync(__dirname + '/lib/testRunner.js')
+	.toString();
 const program = require('commander');
 
-console.log(require('./lib/babelConfigFinder')());
-
+const babelConfigFile = require('./lib/babelConfigFinder')();
 program.version('0.0.1');
 
 program.option('-f, --files <glob>', 'Files to match');
@@ -98,8 +105,8 @@ ${test.testCode}
 								babel.transform(
 									code,
 									{
-										babelrc: true,
-										filename: '.babelrc',
+										babelrc: !!babelConfigFile,
+										filename: babelConfigFile,
 									},
 									(error, result) => {
 										if (error) {
