@@ -75,8 +75,6 @@ glob(
 							describe = match[1];
 						}
 
-						console.log(describe);
-
 						tests.push({
 							name: comment.name,
 							type: comment.kind,
