@@ -2,7 +2,7 @@
  * Adds number a and b together
  * @param {Number} a
  * @param {Number} b
- * @test
+ * @test "1 + 2 should be 3"
  * assert(add(1, 2)).toBe(3);
  *
  * // Testing newline and comments!

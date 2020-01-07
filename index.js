@@ -65,11 +65,24 @@ glob(
 						if (tag.title != 'test') {
 							return;
 						}
+
+						let testCode = tag.value.trim();
+						let describe = '';
+
+						if (testCode.charAt(0) === '"') {
+							const match = testCode.match(/\"(.*?)\"/);
+							testCode = testCode.replace(match[0], '').trim();
+							describe = match[1];
+						}
+
+						console.log(describe);
+
 						tests.push({
 							name: comment.name,
 							type: comment.kind,
+							describe,
 							file: file.file,
-							testCode: tag.value,
+							testCode,
 							fileData: file.fileData,
 						});
 					});
@@ -90,7 +103,8 @@ glob(
 					printedHeaders.push(header);
 				}
 
-				console.log('Running:');
+				console.log(`${test.describe || 'Running'}:`);
+
 				customPrintTest(`${test.testCode}`);
 
 				try {
