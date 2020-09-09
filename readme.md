@@ -22,7 +22,7 @@ node index.js -f example/**/*.js
 
 ## Example test
 
-Note: currenlty the only assertion available is assert(a).toBe(b);
+Note: currently the only assertion available is assert(a).toBe(b);
 
 ```js
 /**
