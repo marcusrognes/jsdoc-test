@@ -37,7 +37,7 @@
 		"commander": "^4.1.1",
 		"glob": "^7.1.6",
 		"jsdoc-api": "^5.0.4",
-		"moment": "^2.27.0"
+		"moment": "^2.29.2"
 	},
 	"devDependencies": {
 		"prettier": "^1.19.1"
